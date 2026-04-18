@@ -19,7 +19,7 @@ class PathD :
         self.j_name = j_name
         self.pf_name = pf_name
         Asset_path = self.Base_Dih/'Asset'
-        Path(Asset_path).mkdir(exist_ok = True)
+        Asset_path.mkdir(exist_ok = True)
         self.run()
     def lib_module(self) :
         list_lib = ['pillow']
@@ -42,7 +42,7 @@ class PathD :
         Dpathd = folder_file/'__init__.py'
         folder_file.mkdir(exist_ok = True)
         (Dpathd).touch(exist_ok = True)
-        list_callf = [main_dir,test_dir,'Asset']
+        list_callf = [main_dir,test_dir,Asset]
         for file in list_callf :
             new_path = folder_file/file.name
             if file.exists() :    
