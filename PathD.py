@@ -18,7 +18,7 @@ class PathD :
         self.Base_Dih = Path(__file__).parent.absolute()
         self.j_name = j_name
         self.pf_name = pf_name
-        Asset_path = self.Base_Dih/'Asset'
+        self.Asset_path = self.Base_Dih/'Asset'
         Asset_path.mkdir(exist_ok = True)
         self.run()
     def lib_module(self) :
@@ -42,12 +42,12 @@ class PathD :
         Dpathd = folder_file/'__init__.py'
         folder_file.mkdir(exist_ok = True)
         (Dpathd).touch(exist_ok = True)
-        list_callf = [main_dir,test_dir,Asset]
+        list_callf = [main_dir,test_dir,self.Asset_path]
         for file in list_callf :
             new_path = folder_file/file.name
             if file.exists() :    
                 if file != new_path :
-                    st.move(str(file),str(new_path))
+                    st.move(file,str(new_path))
             else :
                 self.log.info('ngon,do phai don file nua,co san roi,gio di tiep thoi :3')
         o.chdir(folder_file)
