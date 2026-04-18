@@ -10,13 +10,16 @@ import mimetypes as m
 import sys as ss
 import importlib as il
 import importlib.util as iu
+ss.dont_write_bytecode = True
 class PathD :
     def __init__(self,Ghname,Repon,j_name,pf_name) :
         m.init()
-        self.Gh_url = f'https://raw.githubusercontent.com{Ghname}/{Repon}/HEAD'
+        self.Gh_url = f'https://raw.githubusercontent.com/{Ghname}/{Repon}/HEAD'
         self.Base_Dih = Path(__file__).parent.absolute()
         self.j_name = j_name
         self.pf_name = pf_name
+        Asset_path = self.Base_Dih/'Asset'
+        Path(Asset_path).mkdir(exist_ok = True)
         self.run()
     def lib_module(self) :
         list_lib = ['pillow']
@@ -27,20 +30,29 @@ class PathD :
     def don_nha(self) :
         main_dir = Path(__file__).resolve()
         import __main__
-        test_dir = Path(__main__.__file__).resolve()
-        folder_goc = test_dir.parent 
+        try :
+            if not hasattr(__main__,"__file__") :
+                folder_goc = Path("/sdcard/Documents/Pydroid3").resolve()
+            else :
+                test_dir = Path(__main__.__file__).resolve()
+                folder_goc = test_dir.parent 
+        except Exception as e :
+            self.log.error(f"fix bug plss,bug is {e} (don_nha 1)")
         folder_file = folder_goc/self.pf_name
         Dpathd = folder_file/'__init__.py'
         folder_file.mkdir(exist_ok = True)
         (Dpathd).touch(exist_ok = True)
-        list_callf = [main_dir,test_dir]
+        list_callf = [main_dir,test_dir,'Asset']
         for file in list_callf :
             new_path = folder_file/file.name
-            if file != new_path :
-                st.move(str(file),str(new_path))
+            if file.exists() :    
+                if file != new_path :
+                    st.move(str(file),str(new_path))
+            else :
+                self.log.info('ngon,do phai don file nua,co san roi,gio di tiep thoi :3')
         o.chdir(folder_file)
         self.Base_Dih = folder_file
-        List_folder = ['Code','Asset']
+        List_folder = ['Code']
         for folder in List_folder :
             (Path(folder)).mkdir(exist_ok = True)
         code_dir = Path("Code")/'__init__.py'
@@ -49,7 +61,7 @@ class PathD :
         self.log = self.Base_Dih/'Asset'/'log.txt'
         l.basicConfig(                                                           level = l.INFO,                                                   format = '%(asctime)s -%(levelname)s - %(message)s',                                     handlers =  [                                                              l.FileHandler(self.log,encoding = 'utf-8'),                                                                   l.StreamHandler()                                   ]                                                                    )
         self.log = l.getLogger('Github PathD Model 1')
-        self.log.info('-'* 30 +'Chao mung bozo cua toi tro lai co le la mot lan nua' + '-' * 30)
+        self.log.info('-'* 15 +'Chao mung bozo cua toi tro lai co le la mot lan nua' + '-' * 15)
     def Djson (self) :
         if not self.j_name.endswith('.json') :
             self.j_name += '.json'
@@ -92,6 +104,7 @@ class PathD :
         import __main__
         try :
             self.log.info(f'umm,co san {lib_name} roi a,ngon,import luon :3')
+            lib_name = "PIL" if lib_name.lower() == "pillow" else lib_name
             lib = il.import_module(lib_name)
             setattr(__main__,lib_name,lib)
             self.log.info('ok,xong roi day <3')
@@ -104,9 +117,9 @@ class PathD :
                 setattr(__main__,lib_name,lib)
                 self.log.info('ok,on roi day:3')
             except Exception as e :
-                self.log.info(f'fix bug plss,bug is {e} (Dlib 1)')
+                self.log.error(f'fix bug plss,bug is {e} (Dlib 1)')
         except Exception as e :
-            self.log.info(f'W : fix bug plss,bug is {e} (Dlib 2)')        
+            self.log.error(f'W : fix bug plss,bug is {e} (Dlib 2)')        
     def Dfile(self) :
         Config_file = self.Djson()
         if not Config_file :
@@ -130,7 +143,7 @@ class PathD :
                                 f.write(data)
                                 self.log.info(f'ngon,tai xong file {g_name} roi <3')
                     except Exception as e :
-                        self.log.info(f'W : fix bug plss,bug is {e} (Dfile)')
+                        self.log.error(f'W : fix bug plss,bug is {e} (Dfile)')
     def Dasset(self) :
         import __main__
         try :
@@ -152,11 +165,11 @@ class PathD :
                     setattr(__main__,name_va,str(file_asset))
                     self.log.info(f'umm,xin loi bozo,file {file_asset} khong phai img nen toi danh gui path vay,mong dai nhan tha mang cho tieu nhan :3 ')
         except Exception as e :
-            self.log.info(f'W : fix bug plss,bug is {e} (Dasset)')
+            self.log.error(f'W : fix bug plss,bug is {e} (Dasset)')
     def Dcode(self) :
         import __main__ as _chong_yeu_
         code_path = self.Base_Dih/'Code'
-        for C in code_p.glob('*.py') :
+        for C in code_path.glob('*.py') :
             self.log.info(f'umm,doi to nap module ty nhe cau :3(ghi ten de cau de check : {C.stem})')
             if C.name == '__init__.py' : continue
             try :
@@ -167,10 +180,10 @@ class PathD :
                 setattr(__main__,mod_name,emod)
                 self.log.info(f'ok xong,arigato daisuki :3')
             except Exception as e :
-                self.log.info(f'W : fix bug plss,bug is {e} (Dcode)')
+                self.log.error(f'W : fix bug plss,bug is {e} (Dcode)')
     def run(self) :
-        self.don_nha()
         self.Code_log()
+        self.don_nha()
         self.lib_module()
         self.Dfile()
         self.Dasset()
