@@ -19,7 +19,7 @@ class PathD :
         self.j_name = j_name
         self.pf_name = pf_name
         self.Asset_path = self.Base_Dih/'Asset'
-        Asset_path.mkdir(exist_ok = True)
+        self.Asset_path.mkdir(exist_ok = True)
         self.run()
     def lib_module(self) :
         list_lib = ['pillow']
