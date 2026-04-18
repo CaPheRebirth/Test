@@ -85,7 +85,7 @@ class PathD :
         except ue.URLError as e :
             self.log.error(f'umm,nay bozo,toi nghi cuc wifi nha ban om phan lao a bien roi...that long ma noi,toi khuyen ban nen nhin lai cuc wifi hoac url di,dung de bon no tao phan (idk, ly do : {e.reason})')
             return False
-        except JSONdecodeError as e :
+        except j.JSONdecodeError as e :
             self.log.error(f'xem lai file json di,toi nghi hoi co ty van de o day do...(bug is {e})')
             return False
         except Exception as e :
